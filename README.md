@@ -80,6 +80,7 @@ From project root:
 ### Packaging (Windows Installer)
 > Important: Vite config for Electron
 > Electron loads the app via file://..., so Vite must use relative asset paths.
+
 In vite.config.ts, ensure:
 `base: "./"`
 
