@@ -78,18 +78,21 @@ From project root:
 `npm run build`
 
 ### Packaging (Windows Installer)
-Important: Vite config for Electron
-Electron loads the app via file://..., so Vite must use relative asset paths.
+> Important: Vite config for Electron
+> Electron loads the app via file://..., so Vite must use relative asset paths.
 In vite.config.ts, ensure:
 `base: "./"`
 
 ## Build NSIS Setup.exe
 `npx electron-builder --win nsis --x64`
+
 After a successful build, the installer will be located in the configured output directory (commonly):
+
 `release/`
-Expected artifacts:
-`Motorcycle Forensic Data Visualizer Setup <version>.exe` (send this to the client)
-`release/win-unpacked/` (debug/portable folder output)
+
+**Expected artifacts:**
+- `Motorcycle Forensic Data Visualizer Setup <version>.exe` (send this to the client)
+- `release/win-unpacked/` (debug/portable folder output)
 
 # This application is developed using Google AI Studio
 <div align="center">
