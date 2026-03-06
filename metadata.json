@@ -1,0 +1,5 @@
+{
+  "name": "Motorcycle Forensic Data Visualizer",
+  "description": "Professional forensic analysis tool for motorcycle datalogging CSV files, featuring interactive multi-signal plotting and data inspection.",
+  "requestFramePermissions": []
+}
