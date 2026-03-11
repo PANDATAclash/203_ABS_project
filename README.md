@@ -1,4 +1,4 @@
-````markdown
+
 # Developer Update Guide — Motorcycle Forensic Data Visualizer (Python)
 
 This document explains how to update the application after changing `app.py`, rebuild the executable, and create a new Windows installer.
@@ -315,3 +315,4 @@ That makes rebuilding faster and repeatable.
 
 ```
 ```
+
