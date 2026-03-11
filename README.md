@@ -99,7 +99,7 @@ rmdir /s /q installer_output
 Run:
 
 ```bash
-pyinstaller --noconfirm --windowed --icon=assets/app_icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
+pyinstaller --noconfirm --windowed --icon=assets/icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
 ```
 
 This creates a new packaged application in:
@@ -120,7 +120,7 @@ Important:
 Open `installer.iss` in **Inno Setup Compiler** and click:
 
 * **Build → Compile**
-* or press **F9**
+* or press **ctrl+F9**
 
 This creates a new installer in:
 
@@ -315,4 +315,5 @@ That makes rebuilding faster and repeatable.
 
 ```
 ```
+
 
