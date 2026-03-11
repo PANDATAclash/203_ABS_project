@@ -190,7 +190,7 @@ rmdir /s /q installer_output
 ### Rebuild executable
 
 ```bash
-pyinstaller --noconfirm --windowed --icon=assets/app_icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
+pyinstaller --noconfirm --windowed --icon=assets/icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
 ```
 
 ### Optional: reinstall dependencies
@@ -234,7 +234,7 @@ rmdir /s /q installer_output
 ### 4. Rebuild packaged app
 
 ```bash
-pyinstaller --noconfirm --windowed --icon=assets/app_icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
+pyinstaller --noconfirm --windowed --icon=assets/icon.ico --name "Motorcycle Forensic Data Visualizer" app.py
 ```
 
 ### 5. Open `installer.iss` in Inno Setup
@@ -283,7 +283,7 @@ Check:
 
 * `dist/Motorcycle Forensic Data Visualizer/` exists
 * `installer.iss` points to the correct folder
-* `assets/app_icon.ico` exists if used in PyInstaller or Inno Setup
+* `assets/icon.ico` exists if used in PyInstaller or Inno Setup
 
 Common fix:
 Delete old `build/`, `dist/`, and `installer_output/` folders and rebuild from scratch.
@@ -315,5 +315,6 @@ That makes rebuilding faster and repeatable.
 
 ```
 ```
+
 
 
