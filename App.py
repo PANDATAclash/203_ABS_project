@@ -25,7 +25,6 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-
 # =========================================================
 # Helpers
 # =========================================================
@@ -46,7 +45,6 @@ def parse_float(value: str) -> float:
         return float(value.strip().replace(",", "."))
     except Exception:
         return np.nan
-
 
 # =========================================================
 # Signal configuration
@@ -105,7 +103,6 @@ UNIT_AXIS_LABELS = {
     "km/h": "Speed (km/h)",
 }
 
-
 # =========================================================
 # Data model
 # =========================================================
@@ -116,7 +113,6 @@ class LoadedCSV:
     rows: List[List[str]]
     x: np.ndarray
     series: Dict[str, np.ndarray]
-
 
 def find_column(headers: List[str], candidates: List[str]) -> Optional[int]:
     normalized_headers = [normalize_name(h) for h in headers]
@@ -136,7 +132,6 @@ def find_column(headers: List[str], candidates: List[str]) -> Optional[int]:
 
     return None
 
-
 def parse_float_column(rows: List[List[str]], col: int) -> np.ndarray:
     data = []
     for row in rows:
@@ -145,7 +140,6 @@ def parse_float_column(rows: List[List[str]], col: int) -> np.ndarray:
         else:
             data.append(np.nan)
     return np.array(data, dtype=float)
-
 
 def load_csv(path: str) -> LoadedCSV:
     with open(path, "r", newline="", encoding="utf-8-sig") as f:
@@ -177,7 +171,6 @@ def load_csv(path: str) -> LoadedCSV:
             series[key] = parse_float_column(rows, col)
 
     return LoadedCSV(headers=headers, rows=rows, x=x, series=series)
-
 
 # =========================================================
 # Table model
@@ -213,7 +206,6 @@ class CSVTableModel(QAbstractTableModel):
         if orientation == Qt.Vertical:
             return str(section)
         return None
-
 
 # =========================================================
 # Main window
@@ -565,7 +557,6 @@ class MainWindow(QMainWindow):
 
         QMessageBox.information(self, "Exported", f"Saved:\n{out_path}")
 
-
 # =========================================================
 # Main
 # =========================================================
@@ -573,10 +564,9 @@ class MainWindow(QMainWindow):
 def main():
     app = QApplication([])
     win = MainWindow()
-    win.resize(1300, 850)
+    win.resize(900, 600)
     win.show()
     app.exec()
-
 
 if __name__ == "__main__":
     main()
