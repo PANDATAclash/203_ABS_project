@@ -1,1 +1,1 @@
-﻿# Filtering branch
+This folder contains MATLAB and Python scripts for filtering motorcycle acceleration data from a CSV file. Both scripts apply a 4th-order 5 Hz Butterworth low-pass filter using zero-phase/zero-delay filtering, which is useful for removing phase shift and clearly seeing how the acceleration signal or system behavior changes without introducing delay. They also compare the newly filtered signal with the existing filtered acceleration data, save the results to a new CSV file, and plot the comparison for analysis.
