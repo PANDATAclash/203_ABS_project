@@ -1,1 +1,1 @@
-Here is the data collected from the motorcycle test runs. Multiple log files have been added in CSV format. Please note that not all of the data was recorded using the same software, so the file structure and available parameters may differ between some of the logs.
+Here you can find the data collected from the motorcycle test runs. Multiple log files have been added in CSV format. Please note that not all of the data was recorded using the same software, so the file structure and available parameters may differ between some of the logs.
