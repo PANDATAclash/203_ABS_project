@@ -13,13 +13,13 @@ Adafruit_GPS GPS(&GPSSerial);
 
 File logFile;
 
-const uint32_t LOG_INTERVAL_MS = 17;     // ~58.8 Hz logger
+const uint32_t LOG_INTERVAL_MS = 10;     // 100 Hz logger
 const uint32_t GPS_STALE_MS    = 2000;   // declare GPS lost after 2 s without a parse
 const uint32_t ERROR_REPEAT_MS = 5000;   // repeat active error messages every 5 s
 
 // ---------------- Hall frequency measurement ----------------
-const int HALL_F_PIN = 4;
-const int HALL_R_PIN = 5;
+const int HALL_F_PIN = 36;
+const int HALL_R_PIN = 37;
 
 volatile uint32_t lastEdgeUsHallF = 0;
 volatile uint32_t lastEdgeUsHallR = 0;
@@ -113,13 +113,17 @@ void updateHallReadings() {
 // ------------------------------------------------------------
 
 // ---------------- Time / state ----------------
-uint32_t startMs        = 0;
-uint32_t lastLogMs      = 0;
-uint32_t lastGpsParseMs = 0;
-uint32_t lastErrorMs    = 0;
+uint32_t startMs            = 0;
+uint32_t lastLogMs          = 0;
+uint32_t lastGpsParseMs     = 0;
+uint32_t lastErrorMs        = 0;
+uint32_t lastCalibStreamMs  = 0;
 
-bool loggingActive = false;
-bool statsReady    = false;
+bool loggingActive   = false;
+bool statsReady      = false;
+bool calibStreaming  = false;
+
+const uint32_t CALIB_STREAM_INTERVAL_MS = 200;  // 5 Hz pitch stream
 
 // Active error flags — each true condition repeats its message every ERROR_REPEAT_MS.
 bool errorGPS = false;
@@ -245,12 +249,12 @@ void getLocalDateTimeFromGPS(int &year, int &month, int &day, int &hour, int &mi
 }
 
 bool enableReports() {
-  if (!bno08x.enableReport(SH2_ACCELEROMETER, 16667)) {
+  if (!bno08x.enableReport(SH2_ACCELEROMETER, 10000)) {
     BLE.println("ERR rawacc");
     return false;
   }
 
-  if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, 16667)) {
+  if (!bno08x.enableReport(SH2_GYROSCOPE_CALIBRATED, 10000)) {
     BLE.println("ERR gyro");
     return false;
   }
@@ -410,6 +414,8 @@ void startLogging() {
   logFile.println("t_s,gyro_x_rads,gyro_y_rads,raw_ax_mps2,raw_ay_mps2,raw_az_mps2,speed_kmh,hall_f_hz,hall_r_hz,gps_fix");
   logFile.flush();
 
+  calibStreaming = false;   // stop alignment stream before logging
+
   rawAccValid = false;
   gyroValid   = false;
   resetCalibration();
@@ -506,6 +512,10 @@ void loop() {
       stopLogging();
     } else if (cmd == 's' || cmd == 'S') {
       sendStatusBLE();
+    } else if (cmd == 'c' || cmd == 'C') {
+      calibStreaming = !calibStreaming;
+      BLE.println(calibStreaming ? "PITCH_STREAM ON" : "PITCH_STREAM OFF");
+      lastCalibStreamMs = 0;
     }
   }
 
@@ -603,6 +613,20 @@ void loop() {
     }
 
     updateCalibration();
+  }
+
+  // ---- Pitch alignment stream ('c' command) ----
+  // Streams pitch angle derived from static accelerometer gravity vector so
+  // the operator can bend/adjust the IMU mount plate to level it.
+  // Disabled automatically when logging starts.
+  if (calibStreaming && rawAccValid) {
+    uint32_t nowMs = millis();
+    if (lastCalibStreamMs == 0 || (nowMs - lastCalibStreamMs) >= CALIB_STREAM_INTERVAL_MS) {
+      lastCalibStreamMs = nowMs;
+      float pitch = atan2f(rawAx, sqrtf(rawAy * rawAy + rawAz * rawAz)) * 57.2958f;
+      BLE.print("PITCH:");
+      BLE.println(pitch, 2);
+    }
   }
 
   // ---- SD logging ----
